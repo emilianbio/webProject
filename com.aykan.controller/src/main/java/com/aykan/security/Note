@@ -1,0 +1,38 @@
+
+Giriþ kontrol dinleyicileri =>
+
+	1) Eger giriþ baþarýsýzsa throw BadCrentialsException fýrlatacaz ve bu hatayý dinleyen bir listener oluþturacagýz.
+		
+		-> public class AuthenticationFailureEventListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent>
+		
+		sonra baþarýsýz olan kullanýcýnýn remoteAddress'ini ip'sini bir map'te saklayacagýz. Map<String,Integer> cache; ip, giriþDenemesi
+		
+		Bir sonraki baþarýsýz denemede gelen ip'in giriþ denemesini artýracagýz. 
+		
+		**Baþarýsýz bir giriþte  => 
+										int giriþDenemesi = 0;  
+										cache.put(ipAddress, giriþDenemesi);
+		
+		**Ýkinci baþarýsýz istekte => 
+										giriþDenemesi = cache.get(ipAddress); 
+										giriþDenemesi++; 
+										cache.put(ipAddress, giriþDenemesi);
+				
+	2) Eger giriþ baþarýlýysa Springin AuthenticationSuccessEvent'ini dinleyecegiz.
+	
+		-> public class AuthenticationSuccessEventListener implements ApplicationListener<AuthenticationSuccessEvent>
+		
+		Giriþ yapamaya calýsan kullanýcýnýn ip adresini alacagýz ve giriþ yapmadan önce hatalý giriþ yapmýssa bu hatalý giriþ'i silecegiz.
+		
+		**Örnegin =>
+					cache.remove(ipAddress);
+					
+Giriþ kontrol yakalýcýyýlarý =>
+	
+	1) Eger giriþ baþarýlýysa AuthenticationSuccesHandler trafýndan yakalanýr.
+		
+		-> public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler			
+					
+	2) Eger giris baþarýsýzsa 
+		
+		

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	
+		<!-- Hata yönetimini Spring'e veriyoruz. -->
+		<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"></bean>
+		
+		<!-- Task'ı aktif hale getiryioruz -->
+		<task:annotation-driven/>
+		
+	
+		<!-- email.properties dosyası  -->
+		<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+			<property name="location" value="classpath:email.properties"></property>
+		</bean>
+		
+		<!-- id önemli autowired yaparken kullanacagız -->
+		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+			<property name="basename" value="classpath:messages"></property>
+			<property name="defaultEncoding" value="UTF-8"></property>
+		</bean>
+			
+		<bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+			<property name="port" value="${smtp.port}"></property>
+			<property name="protocol" value="${smtp.protocol}"></property>
+			<property name="username" value="${smtp.username}"></property>
+			<property name="password" value="${smtp.password}"></property>
+			<property name="host" value="${smtp.host}"></property>
+			<property name="javaMailProperties">
+				<props>
+					<prop key="mail.smtp.auth">true</prop>
+					<prop key="mail.smtp.starttls.enable">true</prop>
+				</props>
+			</property>
+		</bean>
+</beans>
+<!-- smtp.host=localhost -->
+<!-- smtp.port=2525 -->
+<!-- smtp.protocol=smtp -->
+<!-- smtp.username=test -->
+<!-- smtp.password=test -->
+<!-- support.email=aykanferhat@hotmail.com -->

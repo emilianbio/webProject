@@ -1,0 +1,32 @@
+Transaction -> 
+			Transaction, bir veritabaný üzerinde gerçekleþtirilen select,insert,update,delete sarmalayan mekanizmanýn adýdýr. 
+			Bu mekanizma söz konusu operasyon/operasyonlarý belirlenen kural/kurallar saðlanmýþ ise uygular, 
+			kalýcý hale getirir yani veritabanýna yazar(commit).
+			Eðer kural/kurallar saðlanmamýþ ise gerçekleþtirilmek istenen operasyonlarý iptal eder. 
+			Yani veritabaný, bu operasyonlar öncesi durumunu korur(rollback).
+	
+			Örnek olarak;
+
+			Bir uygulama olsun, uygulama bize uygulmayý kullanan kullanýcýlar arasýnda mesajlaþma desteði saglýyor. Ve gelen giden mesajlar veritabanýna yansýyor.
+			
+			1. kullanýcý 2.kullanýcýya mesaj gönderir. Mesaj gönderildiðine dair veritabanýnda gönderilen mesaj tablosunda kayýt tutar 
+			ama mesaj 2.kullanýcýya iletilmez bir problem cýkar, burada Transaction mekanizmasý devreye girer. 
+			Mesajýn diger kullanýcýya iletilmedigini anlayýnca iþlemi baþarýsýz sayar iþlemleri geri alýr.(rollback)
+			
+			Baþka bir örnek ise Bankanýn havale sistemi, Bankadan bir kullanýcý diðer kullanýcýya havale yöntemiyle para gönderir, gönderilen para birinci kullanýcýnýn hesabýndan
+			azalýr, bankadan kaynaklanan bir problem ile para ikinci kullanýcýya iletilmez.
+			Problem; gönderilen para birinci kullanýcýn hesabýndan azalýrken ikinci kullanýcýya iletilmedi. Burada ayný þekilde transaction mekanizmasý devreye girer iþlemleri geri
+			alýr gönderilmeyen parayý birinci kullanýcýnýn hesabýna yükler.
+			
+			Yani tüm iþlemlerin baþarýlý olmasý gerekmektedir.
+			
+Transaction'ý kullanabilmek için veritabaný ACID mekanizmasýný desteklemelidir.
+
+			Atomicity : Transaction içindeki tüm iþlemcikler(delete - update - crate - insert) baþarýlý olmalýdýr . 
+
+			Consistency : Yapýlan iþlemler sonucunda oluþan çýktýlarýn tutarlýlýðý anlamýna gelir.
+
+			Isolation : Ayný anda çalýþan transactionlarýn birbirlerine çakýþmadan çalýþma olayýdýr.
+
+			Durability(Kalýcýlýk - Saglamlýk) :Transaction iþlemi boyunca veriler üzerinde deðiþiklik yapýlabilir. Deðiþiklilikler sonucunda veritabanýnda yer almasýdýr.
+				

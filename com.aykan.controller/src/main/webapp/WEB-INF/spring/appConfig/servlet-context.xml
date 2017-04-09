@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<mvc:annotation-driven enable-matrix-variables="true"></mvc:annotation-driven>
+	
+	<context:component-scan base-package="com.aykan"></context:component-scan>
+	<context:annotation-config></context:annotation-config>
+	
+<!-- 	<bean id="messageSource" class="org.springframework.context.support.MessageSourceResourceBundle"> -->
+<!-- 		<constructor-arg name="source" ref="reloadableResourceBundleMessageSource"></constructor-arg> -->
+<!-- 		<constructor-arg name="locale" value="en"></constructor-arg> -->
+<!-- 	</bean> -->
+	
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en"></property>			
+	</bean>
+	
+	<!--  İnterceptor : yol kesen, müdahaleci, araya gireb -->
+	<!-- Http request sonrasonda localımızın degişmesini saglıyor -->
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="language"></property>
+		</bean>
+	</mvc:interceptors>
+	
+	<mvc:resources location="/resouces/**" mapping="/resources/"></mvc:resources>
+
+	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<set>
+				<ref bean="departmentFormatter"/>
+				<ref bean="jobFormatter"/>
+				<ref bean="roleFormatter"/>			
+			</set>
+		</property>
+	</bean>
+	
+			
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"></bean>
+	
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/base-tiles.xml</value>
+				<value>/WEB-INF/tiles/employee-tiles.xml</value>
+				<value>/WEB-INF/tiles/job-tiles.xml</value>
+				<value>/WEB-INF/tiles/user-tiles.xml</value>
+				<value>/WEB-INF/tiles/admin-tiles.xml</value>
+			</list>		
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE tiles-definitions PUBLIC  
+      "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+      "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+<tiles-definitions>  
+  
+   <!-- Register User Page -->
+  <definition name="registration" extends="base.definition">  
+       <put-attribute name="title" value="Register" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/registerUser.jsp" />  
+   </definition>
+   
+     <!-- Login User Page -->
+  <definition name="login" extends="base.definition">  
+       <put-attribute name="title" value="Login" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/login.jsp" />  
+   </definition>
+   
+      <!-- Register User Page -->
+  <definition name="users" extends="base.definition">  
+       <put-attribute name="title" value="User List" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/users.jsp" />  
+   </definition>
+   
+   
+       <!-- badUser Page -->
+  <definition name="badUser" extends="base.definition">  
+       <put-attribute name="title" value="Bad user" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/badUser.jsp" />  
+   </definition>
+   
+          <!-- viewUser Page -->
+  <definition name="viewUser" extends="base.definition">  
+       <put-attribute name="title" value="viewUser" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/viewUser.jsp" />  
+   </definition>
+   
+   <!-- editPassword Page -->
+  <definition name="editPassword" extends="base.definition">  
+       <put-attribute name="title" value="Edit Password" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/editPassword.jsp" />  
+   </definition>
+ 
+  <!-- editUser Page -->
+  <definition name="editUser" extends="base.definition">  
+       <put-attribute name="title" value="Edit User" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/editUser.jsp" />  
+   </definition>
+           <!-- tokenResult Page -->
+  <definition name="tokenResult" extends="base.definition">  
+       <put-attribute name="title" value="Password Reset" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/tokenResult.jsp" />  
+   </definition>
+ 
+           <!-- onlineUsers Page -->
+  <definition name="activeUsers" extends="base.definition">  
+       <put-attribute name="title" value="activeUsers" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/user/activeUsers.jsp" />  
+   </definition>
+ 
+</tiles-definitions>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- Hibernate'in bize Sagladıgı ComboPooledDataSource kullanacagız. -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="user" value="root"></property>
+		<property name="password" value="12345"></property>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/employee"></property>
+		
+		<!-- Veritabanı cofigration -->
+		<property name="minPoolSize" value="5"></property>
+		<!-- Defaut deger 1 dir -->
+		<property name="maxPoolSize" value="300"></property>
+		<!-- Default deger 100 dür -->
+		<property name="maxIdleTime" value="3600"></property>
+		
+		<property name="maxStatements" value="500"></property>
+		<!-- maxStatements : önbellekte saklanacak sorgu sayısı -->
+					
+		<property name="acquireIncrement" value="5"></property>
+		<!-- Belirlenen max baglantı yetmediginde her seferde sunucudan aldıgı parametre kadar yeni baglantı istemesi -->
+		
+		<property name="idleConnectionTestPeriod" value="600"></property>
+		<!--Baglantı kontrülü yapıyor. -->
+	</bean>
+<!-- 	Spring DriverManagerDataSource'nude kullanabiliriz. -->
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property> -->
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/oto_store"></property> -->
+<!-- 		<property name="username" value="root"></property> -->
+<!-- 		<property name="password" value="12345"></property> -->
+<!-- 	</bean> -->
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- veritabanı bilgilerimizi dataSource'muze baglıyoruz. -->
+		
+		<property name="packagesToScan" value="com.aykan.domain"></property>
+		<!-- Entity sınfılarımızın bulundugu paketin konumunu veriyoruz. -->
+		
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
+		</property>
+		<!-- Jpa standardımızın Hibernate orm'sini kullanacıgını belirtiyoruz. -->
+		
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.show">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+	
+	<!-- Eger spring jdbc kullansaydık  -->
+<!-- 	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!-- 		<property name="dataSource" ref="dataSource"></property> -->
+<!-- 	</bean> -->
+	
+	
+</beans>
+
+

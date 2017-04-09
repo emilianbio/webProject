@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<bean id="authenticationSuccessHandlerImpl" class="com.aykan.security.handler.AuthenticationSuccessHandlerImpl"></bean>
+	
+	<bean id="customAuthenticationFailureHandler" class="com.aykan.security.handler.CustomAuthenticationFailureHandler"></bean>
+	
+	<bean id="logoutSuccessHandlerImpl" class="com.aykan.security.handler.LogoutSuccessHandlerImpl"></bean>
+
+	<bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler"></bean>
+	
+	<security:global-method-security pre-post-annotations="enabled">
+		<security:expression-handler ref="expressionHandler"/>
+	</security:global-method-security>
+	
+	<security:http use-expressions="true" >
+	
+		<security:access-denied-handler error-page="/login"/>
+		
+	<!--  invalidate-session = true demek cıkıs yapıldıgında sessionuda kapat -->
+		<security:form-login 
+				login-page="/login" 
+				username-parameter="email" 
+				password-parameter="password" 
+				login-processing-url="/login" 
+				authentication-success-handler-ref="authenticationSuccessHandlerImpl"
+				authentication-failure-handler-ref="customAuthenticationFailureHandler"
+		/>
+		<!-- 
+			CustomAuthenticationFailure'da hatadan sonra gidecek url belirttigimiz için bunu belirtmeye gerek yok.
+				 authentication-failure-url="/user/login?error=true"  
+		 -->
+		 
+		<security:logout logout-url="/logout" delete-cookies="JSESSIONID" invalidate-session="false"
+			success-handler-ref="logoutSuccessHandlerImpl"/>
+		
+		<!-- 
+			hasAnyRole(‘ROLE_ADMIN’, ‘ROLE_GUEST’) Bu giriş yapmamış, oturum açmamış bir kullanıcının bu sayfaya erişemeyeceğini söyler
+		 -->
+		<security:csrf disabled="true"/>
+		<security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/users**" access="hasRole('ROLE_WRITE_PRIVILEGE')"/> 
+		<security:intercept-url pattern="/employees**" access="hasRole('ROLE_READ_PRIVILEGE')"/>
+		<security:intercept-url pattern="/jobs**" access="isAuthenticated()"/>
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider ref="daoAuthenticationProvider">
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="daoAuthenticationProvider" class="com.aykan.security.provider.CustomAuthenticationProvider">
+		<property name="passwordEncoder" ref="encoder"></property>
+		<property name="userDetailsService" ref="userDetailsServiceImpl"></property>
+	</bean>
+	
+	<bean id="userDetailsServiceImpl" class="com.aykan.security.service.UserDetailsServiceImpl"></bean>
+	
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	
+	
+	<bean class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler"></bean>
+	
+</beans>

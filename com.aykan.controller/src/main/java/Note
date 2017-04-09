@@ -1,0 +1,6 @@
+ModelAndView ile Model arasýndaki fark
+
+model.addAttribute view katmanýna gönderilen nesneler controller cagýrýldýgý anda controllere yüklenir.
+
+Hibernate ile model katmanýnda yapýlan validasyon iþlemleri controller katmanýndan yapýlarak performans attýrýlabilir
+

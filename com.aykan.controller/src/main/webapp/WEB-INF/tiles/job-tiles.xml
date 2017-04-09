@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE tiles-definitions PUBLIC  
+      "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+      "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+<tiles-definitions>  
+  
+   <!-- jobs Page -->
+  <definition name="jobs" extends="base.definition">  
+       <put-attribute name="title" value="Jobs" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/job/jobs.jsp" />  
+   </definition>
+   
+   <!-- saveJob Page -->
+  <definition name="saveJob" extends="base.definition">  
+       <put-attribute name="title" value="Add Employee" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/job/saveJob.jsp" />  
+   </definition>
+
+  <!-- editJob Page -->
+  <definition name="editJob" extends="base.definition">  
+       <put-attribute name="title" value="Employee Edit" />
+       <put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/job/editJob.jsp" />  
+   </definition>
+   
+   <!-- viewJob Page -->
+   <definition name="viewJob" extends="base.definition">
+   		<put-attribute name="title" value="Employee View"></put-attribute>
+   		<put-attribute name="body" value="/WEB-INF/tiles/views/bodyfragments/job/viewJob.jsp"></put-attribute>
+   </definition>
+ 
+</tiles-definitions>
